@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root{
+            --x:0%;
+            --y:0%;
+            --name-left:0;
+            --name-top:0;
+        }
+        .container {
+            margin: 1rem auto;
+            width:320px;
+            box-shadow: 0 0 10px gray;
+            padding: 1rem;
+        }
+
+        .img-container {
+            position: relative;
+            width: 300px;
+            border: 1px solid gray;
+            height: 200px;
+
+
+        }
+
+        img {
+            width: 100px;
+            border-radius: 50%;
+            position: absolute;
+            top:var(--y);
+            left:var(--x);
+        }
+        #name{
+            position: absolute;
+            top:var(--name-top);
+            left:var(--name-left);
+        }
+
+        .axeY {
+            display: flex;
+           /* border: 1px solid red;*/
+            max-width: 400px;
+            align-items: center;
+        }
+
+
+        #rangeY {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            height: 200px;
+            width: 100%;
+        }
+
+        #rangeX {
+            width: 300px;
+        }
+
+        /* Nyomtatásra alkalmazott stíluslap */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .img-container, .img-container * {
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+<input type="file" name="" id="photo" accept="image/*" onchange="add(this)">  
+
+        <div class="axeY">
+            <div class="img-container">
+                <img id="movableImage" src="kam.ico" alt="">
+                <h1 id="name">Kátay</h1>
+                <h3>oktató</h3>
+
+            </div>
+            <div class="inputY">
+                <input type="range" id="rangeY" min="0" max="68" value="0" oninput="move(this)">
+            </div>
+        </div>
+
+        <div class="inputx">
+            <input type="range" id="rangeX" min="0" max="65" value="0" oninput="move(this)">
+        </div>
+        <div>
+            <label for="name-left">Name position left - px:</label>
+            <input onchange="update(this)" type="range"  id="name-left" min="10" max="100">
+        </div>
+        <div>
+            <label for="name-top">Name position top - px:</label>
+            <input onchange="update(this)" type="range"  id="name-top" min="10" max="100">
+        </div>
+
+        <button onclick="printCard()">print</button>
+
+    </div>
+    
+    <script>
+       
+        const docStyle = document.body.style
+       
+
+        const move=(domObj)=>{
+            let val=`${ domObj.value}%`
+            domObj.id=='rangeY' ? docStyle.setProperty('--y' ,val ) : docStyle.setProperty('--x' ,val) 
+
+        }
+
+       const printCard=()=>{
+        window.print()
+       }
+
+       function add(domObj) {
+            console.log(domObj.files[0]);
+            // Ellenőrizze, hogy van-e kiválasztott fájl
+            const reader = new FileReader();
+            if (domObj.files && domObj.files[0]) {         
+                // Beállítja a kiválasztott fájlt a FileReader objektumra
+                reader.onload =(e=>document.getElementById('movableImage').src=e.target.result)
+                // Olvassa be a kiválasztott fájlt mint adat URL-t
+                reader.readAsDataURL(domObj.files[0]);
+                };   
+            }
+            function update(domObj){
+            let val=domObj.type=='range' ? domObj.value+'px' :domObj.value
+             let cssVarName='--'+domObj.id
+            console.log(val,cssVarName);
+            document.body.style.setProperty(cssVarName,val)
+           
+        }
+    </script>
+</body>
+
+</html>

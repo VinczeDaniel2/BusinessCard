@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        form{
+            background-color: rgb(58, 58, 143);
+            max-width: 300px;
+            border-radius: 5%;
+        }
+        .border_bottom{
+            border-bottom: 1px solid rgb(105, 105, 227);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" onchange="update(event)">
+        <form action="" class="form text-center p-4">
+            <div class="border_bottom">
+                <input id="name" type="text" placeholder="Name"><br></br>
+                <input type="file" name="" id="photo" accept="image/*" onchange="add(this)"><br></br>
+                <input id="job" type="text" placeholder="Job"><br></br>
+                <input type="button" onclick="submit()" value="submit">
+            </div>
+            <div class="row">
+                <div>
+                    <label for="bgcolor">Background Color: </label>
+                    <input id="bgcolor" type="color">
+                </div>
+                <div>
+                    <label for="textcolor">Text Color: </label>
+                    <input id="textcolor" type="color">
+                </div>
+                <div>
+                    <label for="bordercolor">Border Color: </label>
+                    <input id="bordercolor" type="color" placeholder="Border Color">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="bordersize">Border Size: </label>
+                    <input id="bordersize" type="range">
+                </div>
+                <div>
+                    <label for="fontsize">Font Size: </label>
+                    <input id="fontsize" type="range">
+                </div>
+                <div>
+                    <label for="borderradius">Border Radius: </label>
+                    <input id="borderradius" type="range">
+                </div>
+            </div>
+        </form>
+        <div class="BusinessCard">
+            <h1 id="h1"></h1>
+            <h2 id="h2"></h2>
+            <h3 id="h3"></h3>
+            <img id="img" src="" alt="">
+        </div>
+    </div>
+    <script>
+        function add(domObj) {
+            console.log(domObj.files[0]);
+            // Ellenőrizze, hogy van-e kiválasztott fájl
+            const reader = new FileReader();
+            if (domObj.files && domObj.files[0]) {         
+                // Beállítja a kiválasztott fájlt a FileReader objektumra
+                reader.onload =(e=>document.getElementById('movableImage').src=e.target.result)
+                // Olvassa be a kiválasztott fájlt mint adat URL-t
+                reader.readAsDataURL(domObj.files[0]);
+                };   
+        }
+        function update(domObj){
+            let val=domObj.type=='range' ? domObj.value+'px' :domObj.value
+            let cssVarName='--'+domObj.id
+            console.log(val,cssVarName);
+            document.body.style.setProperty(cssVarName,val)
+           
+        }
+        function submit() {
+            const name = document.getElementById('h1')
+            console.log(name);
+            const nameInput = document.getElementById('name')
+            console.log(nameInput);
+            name.innerHTML = nameInput.value
+
+        }
+    </script>
+</body>
+</html>
